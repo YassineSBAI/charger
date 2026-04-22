@@ -15,14 +15,15 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            transition: background-color 0.5s ease; /* Makes the color change smooth */
+            transition: background-color 0.5s ease; 
         }
         h1 {
             color: red;
             font-size: 5rem;
             margin-bottom: 20px;
         }
-        button {
+        /* The main 3afak button */
+        #afakBtn {
             font-size: 2rem;
             padding: 15px 40px;
             cursor: pointer;
@@ -32,8 +33,22 @@
             border-radius: 10px;
             font-weight: bold;
         }
-        button:hover {
+        #afakBtn:hover {
             background-color: #ddd;
+        }
+        /* The new smaller reset button */
+        #resetBtn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+        #resetBtn:hover {
+            background-color: #555;
         }
     </style>
 </head>
@@ -41,18 +56,26 @@
 
     <h1>CHARGER</h1>
     <button id="afakBtn">3afak</button>
+    
+    <button id="resetBtn">Reset to Black</button>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         const btn = document.getElementById('afakBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-        // When you click the button, tell the server
+        // Tell server 3afak was clicked
         btn.addEventListener('click', () => {
             socket.emit('buttonClicked');
         });
 
-        // When the server says "colorChange", change the background
+        // Tell server Reset was clicked
+        resetBtn.addEventListener('click', () => {
+            socket.emit('resetClicked');
+        });
+
+        // Change the background to whatever color the server says
         socket.on('colorChange', (color) => {
             document.body.style.backgroundColor = color;
         });
